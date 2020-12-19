@@ -1,10 +1,25 @@
-import React from 'react'
+import React, {useCallback} from 'react';
+import { Avatar, Button, Card } from 'antd';
 
-const UserProfile = () => {
+const UserProfile = ( {setIsLoggedin} ) => {
+    const onLogOut = useCallback(() => {
+        setIsLoggedin(false);
+    },[]);
+
     return (
-        <div>
-            
-        </div>
+        <Card
+            actions={[
+                <div key="twit">쨱쨱<br />0</div>,
+                <div key="followings">팔로잉<br />0</div>,
+                <div key="follower">팔로워<br />0</div>,
+            ]}
+        >
+            <Card.Meta 
+                avatar={<Avatar>SJ</Avatar>}
+                title="sunjo"
+            />
+            <Button onClick={onLogOut}>로그아웃</Button>
+        </Card>
     )
 }
 

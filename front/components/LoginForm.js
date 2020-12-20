@@ -5,7 +5,7 @@ import useInput from '../hooks/useInput';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components'
 
-import {loginAction} from '../reducers';
+import {loginAction} from '../reducers/user';
 
 //인라인으로 쓰면 객체가 계속 생성되서 리랜더링이 된다. 
 const ButtonWrapper = styled.div`

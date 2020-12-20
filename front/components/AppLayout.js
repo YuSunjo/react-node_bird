@@ -16,6 +16,9 @@ const SearchInput = styled(Input.Search)`
 
 const AppLayout = ( {children} ) => {
     // const [isLoggedIn, setIsLoggedIn] = useState(false);
+    
+    //구조분해 할 수도 있다. 
+    // const {isLoggedIn} =useSelector((state) => state.user);
     const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 
     return (

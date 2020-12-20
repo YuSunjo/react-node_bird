@@ -2,6 +2,8 @@ import React,{useState ,useCallback} from 'react';
 import { Button, Form, Input } from 'antd';
 import Link from 'next/link';
 import styled from 'styled-components';
+import PropTypes from 'prop-types'
+import useInput from '../hooks/useInput';
 
 //인라인으로 쓰면 객체가 계속 생성되서 리랜더링이 된다. 
 const ButtonWrapper = styled.div`
@@ -14,17 +16,8 @@ const FormWrapper = styled(Form)`
 
 const LoginForm =({setIsLoggedin}) => {
 
-    const [id, setId] = useState('');
-    const [password, setPassword] = useState('')
-
-
-    const onChangeId = useCallback( (e) => {
-        setId(e.target.value)
-    },[]);
-
-    const onChangePassword = useCallback( (e) => {
-        setPassword(e.target.value)
-    },[]);
+    const [id, onChangeId] = useInput('');
+    const [password, onChangePassword] = useInput('');
 
     const onSubmitForm = useCallback(() => {
         console.log(id, password);
@@ -55,6 +48,10 @@ const LoginForm =({setIsLoggedin}) => {
             </div>
         </FormWrapper>
     )
+}
+
+LoginForm.propTypes= {
+    setIsLoggedin: PropTypes.func.isRequired,
 }
 
 export default LoginForm;

@@ -17,7 +17,7 @@
     ],
     "plugins": [
         "import",
-        "react-hoos"
+        "react-hooks"
     ],
     "rules": {
         

@@ -1,9 +1,11 @@
 import React,{useState ,useCallback} from 'react';
 import { Button, Form, Input } from 'antd';
 import Link from 'next/link';
-import styled from 'styled-components';
-import PropTypes from 'prop-types'
 import useInput from '../hooks/useInput';
+import { useDispatch } from 'react-redux';
+import styled from 'styled-components'
+
+import {loginAction} from '../reducers';
 
 //인라인으로 쓰면 객체가 계속 생성되서 리랜더링이 된다. 
 const ButtonWrapper = styled.div`
@@ -14,14 +16,14 @@ const FormWrapper = styled(Form)`
     padding: 10px;
 `;
 
-const LoginForm =({setIsLoggedin}) => {
-
+const LoginForm =() => {
+    const dispatch = useDispatch();
     const [id, onChangeId] = useInput('');
     const [password, onChangePassword] = useInput('');
 
     const onSubmitForm = useCallback(() => {
         console.log(id, password);
-        setIsLoggedin(true); 
+        dispatch(loginAction({id, password}));
     },[id,password]);
 
     //react form 라이브러리도 있다.
@@ -48,10 +50,6 @@ const LoginForm =({setIsLoggedin}) => {
             </div>
         </FormWrapper>
     )
-}
-
-LoginForm.propTypes= {
-    setIsLoggedin: PropTypes.func.isRequired,
 }
 
 export default LoginForm;

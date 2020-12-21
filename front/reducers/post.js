@@ -7,11 +7,11 @@ export const initialState = {
         },
         content: '첫 번째 게시글',
         Images:[{
-            src:'C:\Users\tnswh\OneDrive\사진\Saved Pictures'
+            src:'https://bookthumb-phinf.pstatic.net/cover/137/995/13799585.jpg?udate=20180726'
         },{
-            src:'C:\Users\tnswh\OneDrive\사진\Saved Pictures'
+            src:'https://gimg.gilbut.co.kr/book/BN001958/rn_view_BN001958.jpg'
         },{
-            src:'C:\Users\tnswh\OneDrive\사진\Saved Pictures'
+            src:'https://gimg.gilbut.co.kr/book/BN001998/rn_view_BN001998.jpg'
         }],
         Comments:[{
             User:{

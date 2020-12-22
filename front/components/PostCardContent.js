@@ -17,7 +17,7 @@ const PostCardContent = ({ postData}) => {       //첫번째 게시글 #익스�
     )
 }
 
-PostCardContent.PropTypes = {
+PostCardContent.propTypes = {
     postData: PropTypes.string.isRequired,
 };
 

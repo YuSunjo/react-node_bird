@@ -1,4 +1,4 @@
-import {all, fork,takeLatest, call, delay} from 'redux-saga/effects';
+import {all, fork,takeLatest, call, delay, put} from 'redux-saga/effects';
 
 
 function logInAPI (data) {
@@ -7,11 +7,13 @@ function logInAPI (data) {
 
 //call이 함수를 부를 때는 logInAPI(action.data)  => call(logInAPI,action.data)  : 함수 , 인수들...
 function* logIn(action) {
+    console.log('saga-login');
     try{
         // const result = yield call(logInAPI, action.data);
         yield delay(1000);
         yield put({
             type: 'LOG_IN_SUCCESS',
+            data: action.data,
             // data: result.data
         });
     }catch(err){

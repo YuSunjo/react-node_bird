@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 //head를 바꾸고 싶으면 Head안에서 바꾸면 됨
 import Head from 'next/head';
 import wrapper from '../store/configureStore';
+import withReduxSaga from 'next-redux-saga'
 //next에서는 Provider을 안해줘도 됨
 
 const App = ({ Component }) => {
@@ -23,4 +24,4 @@ App.propTypes = {
     Component: PropTypes.elementType.isRequired
 }
 
-export default wrapper.withRedux(App);
+export default wrapper.withRedux(withReduxSaga(App));

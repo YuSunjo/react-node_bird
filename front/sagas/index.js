@@ -17,71 +17,6 @@
 //         yield i++;
 //     }
 // }
-import {all ,fork, call, put, takeLatest, delay} from 'redux-saga/effects'
-import axios from 'axios';
-
-function logInAPI (data) {
-    return axios.post('/api/login',data)
-}
-
-//call이 함수를 부를 때는 logInAPI(action.data)  => call(logInAPI,action.data)  : 함수 , 인수들...
-function* logIn(action) {
-    try{
-        // const result = yield call(logInAPI, action.data);
-        yield delay(1000);
-        yield put({
-            type: 'LOG_IN_SUCCESS',
-            // data: result.data
-        });
-    }catch(err){
-        yield put({
-            type: 'LOG_IN_FAILURE',
-            data: err.response.data
-        })
-    }     
-}
-
-//logOut
-function logOutAPI () {
-    return axios.post('/api/logout')
-}
-
-function* logOut() {
-    try{
-        // const result = yield call(logOutAPI);
-        yield delay(1000);
-        yield put({
-            type: 'LOG_OUT_SUCCESS',
-            // data: result.data
-        });
-    }catch(err){
-        yield put({
-            type: 'LOG_OUT_FAILURE',
-            data: err.response.data
-        })
-    }     
-}
-
-//addPost
-function addPostAPI (data) {
-    return axios.post('/api/post',data)
-}
-
-function* addPost(action) {
-    try{
-        // const result = yield call(addPostAPI,action.data);
-        yield delay(1000);
-        yield put({
-            type: 'ADD_POST_SUCCESS',
-            // data: result.data
-        });
-    }catch(err){
-        yield put({
-            type: 'ADD_POST_FAILURE',
-            data: err.response.data
-        })
-    }     
-}
 
 //fork 비동기 함수 호출
 //call 동기 함수 호출 
@@ -101,21 +36,16 @@ function* addPost(action) {
 //==> 완료된것 말고 로딩중에 있는 것에서만 => 요청이 연속으로 두번 왔을 경우에는 백엔드에서 처리 
 //throttle('ADD_POST_REQUEST' , addPost, 2000)  => 2초동안은 한번만 실행되게
 //debouncing => 구글링 해서 찾아보기 
-function* watchLogin() {
-    yield takeLatest('LOG_IN_REQUEST', logIn);
-}  
-function* watchLogOut() {
-    yield takeLatest('LOG_OUT_REQUEST', logOut);
-}
-function* watchAddPost() {
-    yield takeLatest('ADD_POST_REQUEST', addPost);
-}
 
 //fork는 함수를 실행해줌  call 과는 약간 다름 
+
+import {all ,fork} from 'redux-saga/effects'
+import postSaga from './post';
+import userSaga from './user';
+
 export default function* rootSaga() {
     yield all([
-        fork(watchLogin),
-        fork(watchLogOut),
-        fork(watchAddPost),
+        fork(postSaga),
+        fork(userSaga),
     ])
 }

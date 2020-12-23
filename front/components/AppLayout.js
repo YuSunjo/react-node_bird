@@ -34,8 +34,8 @@ const AppLayout = ( {children} ) => {
     // const [isLoggedIn, setIsLoggedIn] = useState(false);
     
     //구조분해 할 수도 있다. 
-    // const {isLoggedIn} =useSelector((state) => state.user);
-    const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+    const { me } =useSelector((state) => state.user);
+    // const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 
     return (
         <div>
@@ -58,7 +58,7 @@ const AppLayout = ( {children} ) => {
             {/* gutter 컨텐츠들끼리의 padding  */}
             <Row gutter={8}>
                 <Col xs={24} md={6}>
-                    {isLoggedIn ? <UserProfile /> : <LoginForm />}
+                    {me ? <UserProfile /> : <LoginForm />}
                 </Col>
                 <Col xs={24} md={12}>
                     {children}

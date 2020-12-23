@@ -40,7 +40,7 @@ function addCommentAPI (data) {
     return axios.post(`/api/post/${data.postId}/comment`,data)
 }
 
-function* addPost(action) {
+function* addComment(action) {
     try{
         // const result = yield call(addPostAPI,action.data);
         yield delay(1000);

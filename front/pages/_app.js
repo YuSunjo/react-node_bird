@@ -7,7 +7,7 @@ import wrapper from '../store/configureStore';
 import withReduxSaga from 'next-redux-saga'
 //next에서는 Provider을 안해줘도 됨
 
-const App = ({ Component }) => {
+const NodeBird = ({ Component }) => {
     return (
         <>
             <Head>
@@ -20,8 +20,8 @@ const App = ({ Component }) => {
 }
 
 //점검 하는게 좋음 
-App.propTypes = {
-    Component: PropTypes.elementType.isRequired
+NodeBird.propTypes = {
+    Component: PropTypes.elementType.isRequired,
 }
 
-export default wrapper.withRedux(withReduxSaga(App));
+export default wrapper.withRedux(withReduxSaga(NodeBird));

@@ -46,7 +46,7 @@ const signup= () => {
             return setTermError(true);
         }
         console.log(id, nickname, password);
-        dispatchEvent({
+        dispatch({
             type: SIGN_UP_REQUEST,
             data : {email, password, nickname},
         })

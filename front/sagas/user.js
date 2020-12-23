@@ -1,8 +1,8 @@
 import {all, fork,takeLatest, call, delay, put} from 'redux-saga/effects';
 import {
-    FOLLOW_FAILURE,
-    FOLLOW_REQUEST,
-    FOLLOW_SUCCESS,
+    // FOLLOW_FAILURE,
+    // FOLLOW_REQUEST,
+    // FOLLOW_SUCCESS,
     LOG_IN_FAILURE,
     LOG_IN_REQUEST,
     LOG_IN_SUCCESS,
@@ -12,9 +12,9 @@ import {
     SIGN_UP_FAILURE,
     SIGN_UP_REQUEST,
     SIGN_UP_SUCCESS,
-    UNFOLLOW_FAILURE,
-    UNFOLLOW_REQUEST,
-    UNFOLLOW_SUCCESS,
+    // UNFOLLOW_FAILURE,
+    // UNFOLLOW_REQUEST,
+    // UNFOLLOW_SUCCESS,
   } from '../reducers/user';
 
 

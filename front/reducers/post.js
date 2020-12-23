@@ -29,6 +29,10 @@ export const initialState = {
     addPostLoading:false,
     addPostDone: false,
     addPostError: null,
+    
+    addCommentLoading:false,
+    addCommentDone: false,
+    addCommentError: null,
 };
 
 export const ADD_POST_REQUEST = 'ADD_POST_REQUEST';
@@ -49,16 +53,16 @@ export const addComment= (data) = {
     data,
 }
 
-const dummyPost ={
+const dummyPost =(data) => ({
     ids:2,
-    content: 'dummy data',
+    content: data,
     User:{
         id:1,
         nickname:'tnswh',
     },
     Images:[],
     Comments:[],
-};
+});
 
 const reducer = (state= initialState, action) => {
     switch (action.type){
@@ -73,7 +77,7 @@ const reducer = (state= initialState, action) => {
             return {
                 ...state,
                 //앞에다가 놔야지 최근에 포스트 쓴것이 처음에 나옴
-                mainPosts:[dummyPost, ...state.mainPosts],
+                mainPosts:[dummyPost(action.data), ...state.mainPosts],
                 addPostLoading: false,
                 addPostDone : true,
             };

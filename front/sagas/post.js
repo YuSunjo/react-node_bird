@@ -16,9 +16,9 @@ import {
   } from '../reducers/post';
 
 //addPost
-function addPostAPI (data) {
-    return axios.post('/api/post',data)
-}
+// function addPostAPI (data) {
+//     return axios.post('/api/post',data)
+// }
 
 function* addPost(action) {
     try{
@@ -26,6 +26,7 @@ function* addPost(action) {
         yield delay(1000);
         yield put({
             type: ADD_POST_SUCCESS,
+            data: action.data,
             // data: result.data
         });
     }catch(err){
@@ -36,9 +37,9 @@ function* addPost(action) {
     }     
 }
 //Comment
-function addCommentAPI (data) {
-    return axios.post(`/api/post/${data.postId}/comment`,data)
-}
+// function addCommentAPI (data) {
+//     return axios.post(`/api/post/${data.postId}/comment`,data)
+// }
 
 function* addComment(action) {
     try{

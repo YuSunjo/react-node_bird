@@ -78,7 +78,7 @@ function* removePost(action) {
 
 function* addComment(action) {
     try{
-        // const result = yield call(addPostAPI,action.data);
+        // const result = yield call(addCommentAPI,action.data);
         yield delay(1000);
         yield put({
             type: ADD_COMMENT_SUCCESS,

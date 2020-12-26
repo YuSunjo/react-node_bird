@@ -31,7 +31,7 @@ function* addPost(action) {
             type: ADD_POST_SUCCESS,
             data: {
                 id,
-                constent: action.data,
+                content: action.data,
             },
             // data: result.data
         });

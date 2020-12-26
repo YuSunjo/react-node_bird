@@ -4,7 +4,7 @@ import AppLayout from "../components/AppLayout";
 import PostForm from '../components/PostForm'
 import PostCard from '../components/PostCard'
 import { useEffect } from 'react';
-import { LOAD_POSTS_REQUEST, LOAD_POST_REQUEST } from '../reducers/post';
+import { LOAD_POSTS_REQUEST } from '../reducers/post';
 
 //Next 는 import React from 'react'이게 필요가 없다.
 const Home = () => {

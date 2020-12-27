@@ -1,5 +1,12 @@
 const express = require('express');
 const postRouter = require('./routes/post');
+const db = require('./models');
+
+db.sequelize.sync()
+    .then(() => {
+        console.log('db연결 성공')
+    })
+    .catch(console.error);
 
 const app = express();
 
@@ -25,3 +32,6 @@ app.listen(3065, () => {
 // app.patch -> 부분 수정
 // app.options -> 찔러보기 
 // app.head -> 헤더만 가져오기
+
+//npx sequelize init   
+//npx sequelize db:create

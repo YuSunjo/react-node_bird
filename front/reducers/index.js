@@ -34,3 +34,21 @@ export default rootReducer;
 //     type: 'CHANGE_NICKNAME',
 //     data: 'hello'
 // }
+
+
+// const initialState = {
+//   name: 'dfsdf',
+//   age: 20,
+//   password: 'bas',
+// }
+
+// const rootReducer = (stat=initialState, action) => {
+//   switch(action.type){
+//     case 'sdfsdf':
+//       return {
+
+//       }
+//   }
+// }
+
+// export default rootReducer;

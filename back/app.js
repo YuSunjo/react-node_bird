@@ -53,6 +53,12 @@ app.get('/posts', (req, res) => {
 app.use('/post' ,postRouter);
 app.use('/user' ,userRouter);
 
+//애러처리 미들웨어는 기본적으로 존재 (밑에 처럼)
+//다른 작업하고 싶을 때 만들어서 사용
+// app.use((err,req, res, next) => {
+
+// })
+
 app.listen(3065, () => {
     console.log('서버실행중');
 })

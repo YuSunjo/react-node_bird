@@ -1,6 +1,6 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
-const {User} = require('../models')
+const {User ,Post} = require('../models')
 const passport = require('passport');
 
 const router = express.Router();
@@ -20,7 +20,24 @@ router.post('/login',(req,res, next) => {
                 console.error(loginErr);
                 return next(loginErr);
             }
-            return res.json(user);
+            //user에서 팔로잉 포스트 이런것은 없고 비밀번호는 있는 상태 
+            //attributes: ['id', 'nickname', 'email'] 처럼 받을 것을 써도 되고
+            const fullUserWithoutPassword = await User.findOne({
+                where: {id: user.id}, 
+                attributes:{
+                    exclude: ['password']
+                },
+                include: [{
+                    model: Post,
+                },{
+                    model: User,
+                    as: 'Followings',
+                },{
+                    model: User,
+                    as: 'Followers',
+                }]
+            })
+            return res.status(200).json(fullUserWithoutPassword);
         })
     })(req, res, next);
 });
@@ -47,5 +64,11 @@ router.post('/', async (req, res, next) => {
         next(error)             //status 500
     }
 })
+
+router.post('/logout', (req, res, next) => {
+    req.logout();
+    req.session.destroy();
+    res.send('ok');
+});
 
 module.exports = router;

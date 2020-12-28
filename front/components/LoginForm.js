@@ -1,4 +1,4 @@
-import React,{useState ,useCallback} from 'react';
+import React,{useCallback,useEffect} from 'react';
 import { Button, Form, Input } from 'antd';
 import Link from 'next/link';
 import useInput from '../hooks/useInput';
@@ -18,9 +18,15 @@ const FormWrapper = styled(Form)`
 
 const LoginForm =() => {
     const dispatch = useDispatch();
-    const {logInLoading} = useSelector((state) => state.user);
+    const {logInLoading, logInError} = useSelector((state) => state.user);
     const [email, onChangeEmail] = useInput('');
     const [password, onChangePassword] = useInput('');
+
+    useEffect(() => {
+        if (logInError) {
+            alert(logInError);
+        }
+    },[logInError]);
 
     const onSubmitForm = useCallback(() => {
         console.log(email, password);
@@ -39,7 +45,7 @@ const LoginForm =() => {
             <div>
                 <label htmlFor="user-password">비밀번호</label>
                 <br />
-                <Input name="user-password" value={password} onChange={onChangePassword} required/>
+                <Input name="user-password" type="password" value={password} onChange={onChangePassword} required/>
             </div>
             {/* const style = useMemo(() => ({marginTop: 10}),[]);   -----useMemo로 해도 됨 */}
             <ButtonWrapper>

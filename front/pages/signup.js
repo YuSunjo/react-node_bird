@@ -16,11 +16,19 @@ const ErrorMessage = styled.div`
 
 const signup= () => {
     const dispatch = useDispatch();
-    const {signUpLoading, signUpDone, signUpError} = useSelector((state) => state.user);
+    const {signUpLoading, signUpDone, signUpError, me} = useSelector((state) => state.user);
+
+    //push => 기록이 남아서 뒤로가기 하면 페이지가 나옴
+    //replace => 기록이 남지 않아서 뒤로가기 해도 안됨 
+    useEffect(() => {
+        if(me && me.id){
+            Router.replace('/');
+        }
+    },[me && me.id]);
 
     useEffect(() => {
         if(signUpDone) {
-            Router.push('/');
+            Router.replace('/');
         }
     },[signUpDone]);
 

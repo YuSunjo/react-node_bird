@@ -7,7 +7,7 @@ const router = express.Router();
 router.post('/', isLoggedIn, async (req, res, next) => {
     try{
         const post = await Post.create({
-            content:req.body.content,
+            content: req.body.content,
             UserId: req.user.id
         });
         const fullPost = await Post.findOne({

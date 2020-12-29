@@ -1,5 +1,5 @@
 import {all ,fork ,takeLatest,delay, put, throttle, call} from 'redux-saga/effects'
-import shortid from 'shortid';
+import axios from 'axios'
 import {
     ADD_COMMENT_FAILURE,
     ADD_COMMENT_REQUEST,
@@ -19,7 +19,7 @@ import { ADD_POST_TO_ME } from '../reducers/user';
 
 // addPost
 function addPostAPI (data) {
-    return axios.post('/post',{content: data})
+    return axios.post('/post',{content: data});
 }
 
 function* addPost(action) {
@@ -36,7 +36,7 @@ function* addPost(action) {
     }catch(err){
         yield put({
             type: ADD_POST_FAILURE,
-            data: err.response.data
+            error: err.response.data,
         })
     }     
 }

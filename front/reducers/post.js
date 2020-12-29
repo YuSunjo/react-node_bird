@@ -70,25 +70,25 @@ export const addComment= (data) => ({
     data,
 });
 
-const dummyPost = (data) => ({
-    id: data.id,
-    content: data.content,
-    User:{
-        id:1,
-        nickname:'tnswh',
-    },
-    Images:[],
-    Comments:[],
-});
+// const dummyPost = (data) => ({
+//     id: data.id,
+//     content: data.content,
+//     User:{
+//         id:1,
+//         nickname:'tnswh',
+//     },
+//     Images:[],
+//     Comments:[],
+// });
 
-const dummyComment = (data) => ({
-    id:shortId.generate(),
-    content: data,
-    User:{
-        id:1,
-        nickname:'tnswh',
-    },
-})
+// const dummyComment = (data) => ({
+//     id:shortId.generate(),
+//     content: data,
+//     User:{
+//         id:1,
+//         nickname:'tnswh',
+//     },
+// })
 
 //immer state가 draft로 바뀐다. 그냥 쓰면 알아서 불변성 있게 해준다. 
 const reducer = (state= initialState, action) => {
@@ -118,7 +118,7 @@ const reducer = (state= initialState, action) => {
             case ADD_POST_SUCCESS:
                 draft.addPostLoading = false;
                 draft.addPostDone = true;
-                draft.mainPosts.unshift(dummyPost(action.data));
+                draft.mainPosts.unshift(action.data);
                 break;
             case ADD_POST_FAILURE:
                 draft.addPostLoading= false;
@@ -155,8 +155,8 @@ const reducer = (state= initialState, action) => {
                 //     addCommentLoading: false,
                 //     addCommentDone : true,
                 // };
-                const post = draft.mainPosts.find((v) => v.id === action.data.postId);
-                post.Comments.unshift(dummyComment(action.data.content));
+                const post = draft.mainPosts.find((v) => v.id === action.data.PostId);
+                post.Comments.unshift(action.data);
                 draft.addCommentLoading = false;
                 draft.addCommentDone = true;
                 break;

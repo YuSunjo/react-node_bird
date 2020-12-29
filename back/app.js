@@ -22,8 +22,8 @@ db.sequelize.sync()
 
 passportConfig();
 app.use(cors({
-    origin: '*',
-    credentials: false,
+    origin: 'http://localhost:3000',
+    credentials: true,                    //백엔드와 브라우저가 포트가 다르면 쿠키도 전달안됨 => true로 해줘야함
 }));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));

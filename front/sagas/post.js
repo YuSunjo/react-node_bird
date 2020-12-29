@@ -42,6 +42,7 @@ function* addPost(action) {
             data: result.data.id,
         });
     }catch(err){
+        console.error(err);
         yield put({
             type: ADD_POST_FAILURE,
             data: err.response.data,
@@ -67,6 +68,7 @@ function* removePost(action) {
             data: action.data,
         });
     }catch(err){
+        console.error(err);
         yield put({
             type: REMOVE_POST_FAILURE,
             data: err.response.data
@@ -107,6 +109,7 @@ function* loadPosts(action) {
             data: result.data
         });
     }catch(err){
+        console.error(err);
         yield put({
             type: LOAD_POSTS_FAILURE,
             data: err.response.data
@@ -126,6 +129,7 @@ function* likePost(action) {
             data: result.data
         });
     }catch(err){
+        console.error(err);
         yield put({
             type: LIKE_POST_FAILURE,
             data: err.response.data
@@ -133,7 +137,7 @@ function* likePost(action) {
     }     
 }
 function unlikePostAPI (data) {
-    return axios.delete(`/posts/${data}/like`);
+    return axios.delete(`/post/${data}/like`);
 }
 
 function* unlikePost(action) {
@@ -144,11 +148,18 @@ function* unlikePost(action) {
             data: result.data
         });
     }catch(err){
+        console.error(err);
         yield put({
             type: UNLIKE_POST_FAILURE,
             data: err.response.data
         })
     }     
+}
+function* watchLikePost() {
+    yield takeLatest(LIKE_POST_REQUEST, likePost);
+}
+function* watchUnLikePost() {
+    yield takeLatest(UNLIKE_POST_REQUEST, unlikePost);
 }
 function* watchAddPost() {
     yield takeLatest(ADD_POST_REQUEST, addPost);
@@ -162,12 +173,7 @@ function* watchRemovePost() {
 function* watchLoadPosts() {
     yield throttle(2000,LOAD_POSTS_REQUEST, loadPosts);
 }
-function* watchLikePost() {
-    yield throttle(LIKE_POST_REQUEST, likePost);
-}
-function* watchUnLikePost() {
-    yield throttle(UNLIKE_POST_REQUEST, unlikePost);
-}
+
 export default function* () {
     yield all([
         fork(watchLikePost),

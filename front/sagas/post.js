@@ -36,7 +36,7 @@ function* addPost(action) {
     }catch(err){
         yield put({
             type: ADD_POST_FAILURE,
-            error: err.response.data,
+            data: err.response.data,
         })
     }     
 }
@@ -78,6 +78,7 @@ function* addComment(action) {
             data: result.data
         });
     }catch(err){
+        console.log(err);
         yield put({
             type: ADD_COMMENT_FAILURE,
             data: err.response.data
@@ -85,18 +86,17 @@ function* addComment(action) {
     }     
 }
 
-//loadPosts
-// function loadPostsAPI (data) {
-//     return axios.get('/api/post',data);
-// }
+// loadPosts
+function loadPostsAPI (data) {
+    return axios.get('/posts',data);
+}
 
 function* loadPosts(action) {
     try{
-        // const result = yield call(loadPostsAPI,action.data);
-        yield delay(1000);
+        const result = yield call(loadPostsAPI,action.data);
         yield put({
             type: LOAD_POSTS_SUCCESS,
-            data: generateDummyPost(10),
+            data: result.data
         });
     }catch(err){
         yield put({

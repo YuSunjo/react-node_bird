@@ -14,6 +14,14 @@ import {
     REMOVE_POST_FAILURE,
     REMOVE_POST_REQUEST,
     REMOVE_POST_SUCCESS,
+
+    LIKE_POST_FAILURE,
+    LIKE_POST_REQUEST,
+    LIKE_POST_SUCCESS,
+    UNLIKE_POST_FAILURE,
+    UNLIKE_POST_REQUEST,
+    UNLIKE_POST_SUCCESS,
+    
   } from '../reducers/post';
 import { ADD_POST_TO_ME } from '../reducers/user';
 
@@ -106,6 +114,42 @@ function* loadPosts(action) {
     }     
 }
 
+function likePostAPI (data) {
+    return axios.patch(`/post/${data}/like`);
+}
+
+function* likePost(action) {
+    try{
+        const result = yield call(likePostAPI,action.data);
+        yield put({
+            type: LIKE_POST_SUCCESS,
+            data: result.data
+        });
+    }catch(err){
+        yield put({
+            type: LIKE_POST_FAILURE,
+            data: err.response.data
+        })
+    }     
+}
+function unlikePostAPI (data) {
+    return axios.delete(`/posts/${data}/like`);
+}
+
+function* unlikePost(action) {
+    try{
+        const result = yield call(unlikePostAPI,action.data);
+        yield put({
+            type: UNLIKE_POST_SUCCESS,
+            data: result.data
+        });
+    }catch(err){
+        yield put({
+            type: UNLIKE_POST_FAILURE,
+            data: err.response.data
+        })
+    }     
+}
 function* watchAddPost() {
     yield takeLatest(ADD_POST_REQUEST, addPost);
 }
@@ -118,8 +162,16 @@ function* watchRemovePost() {
 function* watchLoadPosts() {
     yield throttle(2000,LOAD_POSTS_REQUEST, loadPosts);
 }
+function* watchLikePost() {
+    yield throttle(LIKE_POST_REQUEST, likePost);
+}
+function* watchUnLikePost() {
+    yield throttle(UNLIKE_POST_REQUEST, unlikePost);
+}
 export default function* () {
     yield all([
+        fork(watchLikePost),
+        fork(watchUnLikePost),
         fork(watchAddPost),
         fork(watchRemovePost),
         fork(watchAddComment),

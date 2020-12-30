@@ -19,6 +19,7 @@ function PostCard({ post }) {
     const dispatch = useDispatch();
     const {removePostLoading} = useSelector((state) => state.post);
     const id = useSelector((state) => state.user.me?.id);
+    
 
     const [commentFormOpened, setCommentFormOpened] = useState(false);
 
@@ -44,7 +45,7 @@ function PostCard({ post }) {
             type: REMOVE_POST_REQUEST,
             data: post.id,
         });
-    },[]);
+    },[id]);
 
     const liked = post.Likers.find((v) => v.id ===id);
     return (

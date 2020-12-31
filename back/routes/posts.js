@@ -1,13 +1,20 @@
 const express = require('express');
 
 const {Post, Image, User,Comment} = require('../models');
+const {Op} = require('sequelize');
 
 const router = express.Router();
 
 router.get('/', async (req, res,next) => {
 
     try{
+        const where = {};
+        if (parseInt(req.query.lastId,10)){    //초기 로딩이 아닐 때
+            //[Op.lt]  sequelize 에서 보다 작은거 사용 할 때
+            where.id = {[Op.lt]: parseInt(req.query.lastId,10)} 
+        }
         const posts = await Post.findAll({
+            where,
             //offset 은 단점이있음 
             limit: 10,
             order: [['createdAt', 'DESC'], [Comment, 'createdAt','DESC']],

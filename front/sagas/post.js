@@ -143,8 +143,9 @@ function* addComment(action) {
 }
 
 // loadPosts
-function loadPostsAPI (data) {
-    return axios.get('/posts',data);
+//get에서 데이터를 넣으려면 쿼리스트링 써야함
+function loadPostsAPI (lastId) {
+    return axios.get(`/posts?lastId=${lastId || 0}`);
 }
 
 function* loadPosts(action) {

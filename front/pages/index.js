@@ -33,11 +33,12 @@ const Home = () => {
         function onScroll() {
             //스크롤 할 때 아래 3개를 제일 많이 씀
             //react-virualized도 있음  
-            console.log(window.scrollY, document.documentElement.clientHeight, document.documentElement.scrollHeight);
             if(window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight-300){
                 if(hasMorePost && !loadPostsLoading) {
+                    const lastId = mainPosts[mainPosts.length -1]?.id
                     dispatch({
                         type: LOAD_POSTS_REQUEST,
+                        lastId,
                     });
                 }
             }

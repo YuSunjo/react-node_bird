@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const passport = require('passport');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
+const path = require('path');
 
 const db = require('./models');
 const passportConfig = require('./passport');
@@ -28,6 +29,7 @@ app.use(cors({
     credentials: true,                    //백엔드와 브라우저가 포트가 다르면 쿠키도 전달안됨 => true로 해줘야함
 }));
 
+app.use('/', express.static(path.join(__dirname, 'uploads')))
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));

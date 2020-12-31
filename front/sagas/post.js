@@ -49,8 +49,9 @@ function* uploadImages(action) {
 }
 
 // addPost
+//formData는 {} 감싸지 말고 그냥 data
 function addPostAPI (data) {
-    return axios.post('/post',{content: data});
+    return axios.post('/post',data);
 }
 
 function* addPost(action) {

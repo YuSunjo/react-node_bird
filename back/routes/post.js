@@ -8,20 +8,43 @@ const {isLoggedIn} = require('./middlewares');
 
 const router = express.Router();
 
-try{
-    fs.accessSync('/uploads');
-}catch(error) {
-    console.log('uploads 폴더가 없으므로 생성합니다.');
-    fs.mkdirSync('uploads');
-}
+// try{
+//     fs.accessSync('/uploads');
+// }catch(error) {
+//     console.log('uploads 폴더가 없으므로 생성합니다.');
+//     fs.mkdirSync('uploads');
+// }
 
+const upload = multer({
+    storage: multer.diskStorage({
+        destination(req, file, done) {
+            done(null, 'uploads');
+        },
+        filename(req, file, done){                             // 사진.png
+            const ext = path.extname(file.originalname);       //확장자 추출(.png)
+            const basename = path.basename(file.originalname, ext);
+            done(null, basename + '_' + new Date().getTime() + ext);       //사진1010010.png  (시간까지 붙어서 나온다.)
+        }
+    }),
+    limits: {fileSize: 20* 1024 * 1024},
+});
 
-router.post('/', isLoggedIn, async (req, res, next) => {
+router.post('/', isLoggedIn,upload.none(), async (req, res, next) => {
     try{
         const post = await Post.create({
             content: req.body.content,
             UserId: req.user.id
         });
+        if(req.body.image){
+    //db에 이미지 파일을 올리지 않고 주소만 가지고 있음 db에 있으면 캐싱도 안됨  그리고 이미지는 s3 클라우드에 넣는다 
+            if(Array.isArray(req.body.image)){     //이미지 여러개 올리면 image: [사진1.png 사진2.png]
+                const images = await Promise.all(req.body.image.map((image) => Image.create({src: image})));
+                await post.addImages(images);
+            }else{                                  //이미지 하나만 올리면  image: 사진.png
+                const image = await Image.create({src: req.body.image});
+                await post.addImages(image);
+            }
+        }
         const fullPost = await Post.findOne({
             where: {id: post.id},
             include: [{
@@ -49,19 +72,6 @@ router.post('/', isLoggedIn, async (req, res, next) => {
     
 });
 
-const upload = multer({
-    storage: multer.diskStorage({
-        destination(req, file, done) {
-            done(null, 'uploads');
-        },
-        filename(req, file, done){                             // 사진.png
-            const ext = path.extname(file.originalname);       //확장자 추출(.png)
-            const basename = path.basename(file.originalname, ext);
-            done(null, basename + new Date().getTime() + ext);       //사진1010010.png  (시간까지 붙어서 나온다.)
-        }
-    }),
-    limits: {fileSize: 20* 1024 * 1024},
-});
 //upload.single none 
 //이미지만 먼저 서버에 업로드 -> 미리보기나 리사이징 하기 위해
 router.post('/images', isLoggedIn, upload.array('image'), (req, res, next) => {

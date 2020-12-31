@@ -1,4 +1,5 @@
 import {useDispatch, useSelector} from 'react-redux'
+import {END} from 'redux-saga';
 
 import AppLayout from "../components/AppLayout";
 import PostForm from '../components/PostForm'
@@ -6,6 +7,7 @@ import PostCard from '../components/PostCard'
 import { useEffect } from 'react';
 import { LOAD_POSTS_REQUEST } from '../reducers/post';
 import { LOAD_USER_REQUEST } from '../reducers/user';
+import wrapper from '../store/configureStore';
 
 //Next 는 import React from 'react'이게 필요가 없다.
 const Home = () => {
@@ -19,15 +21,6 @@ const Home = () => {
             alert(retweetError);
         }
     },[retweetError]) 
-
-    useEffect(() => {
-        dispatch({
-            type: LOAD_USER_REQUEST,
-        });
-        dispatch({
-            type: LOAD_POSTS_REQUEST,
-        });
-    },[])
 
     useEffect(() => {
         function onScroll() {
@@ -59,5 +52,18 @@ const Home = () => {
     )
 
 }
+
+//화면을 그리기 전에 서버쪽에서 먼저 실행
+//dispatch 해준 부분을 hydrate로 보내줌 
+export const getServerSideProps = wrapper.getServerSideProps(async (context) => {
+    context.store.dispatch({
+        type: LOAD_USER_REQUEST,
+    });
+    context.store.dispatch({
+        type: LOAD_POSTS_REQUEST,
+    });
+    context.store.dispatch(END);
+    await context.store.sagaTask.toPromise();
+});
 
 export default Home;

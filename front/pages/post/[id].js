@@ -11,9 +11,6 @@ import Head from 'next/head';
 import axios from 'axios';
 import wrapper from '../../store/configureStore';
 
-wrapper
-
-
 const Post = () => {
     const router = useRouter();
     const {id } = router.query;

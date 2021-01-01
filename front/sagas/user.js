@@ -124,7 +124,8 @@ function* loadMyInfo() {
             type: LOAD_MY_INFO_SUCCESS,
             data: result.data
         });
-    }catch(err){
+    }catch(error){
+        console.error(error);
         yield put({
             type: LOAD_MY_INFO_FAILURE,
             error: err.response.data

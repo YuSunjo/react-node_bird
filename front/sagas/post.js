@@ -8,9 +8,19 @@ import {
     ADD_POST_REQUEST,
     ADD_POST_SUCCESS,
     generateDummyPost,
+
+    LOAD_USER_POSTS_FAILURE,
+    LOAD_USER_POSTS_REQUEST,
+    LOAD_USER_POSTS_SUCCESS,
+
+    LOAD_HASHTAG_POSTS_FAILURE,
+    LOAD_HASHTAG_POSTS_REQUEST,
+    LOAD_HASHTAG_POSTS_SUCCESS,
+
     LOAD_POSTS_FAILURE,
     LOAD_POSTS_REQUEST,
     LOAD_POSTS_SUCCESS,
+
     LOAD_POST_FAILURE,
     LOAD_POST_REQUEST,
     LOAD_POST_SUCCESS,
@@ -164,6 +174,46 @@ function* loadPost(action) {
         })
     }     
 }
+function loadHashtagPostsAPI (data,lastId) {
+    //한글일 경우
+    return axios.get(`/hashtag/${encodeURIComponent(data)}?lastId=${lastId || 0}`);
+}
+
+function* loadHashtagPosts(action) {
+    try{
+        const result = yield call(loadHashtagPostsAPI,action.data,action.lastId);
+        yield put({
+            type: LOAD_HASHTAG_POSTS_SUCCESS,
+            data: result.data
+        });
+    }catch(err){
+        console.error(err);
+        yield put({
+            type: LOAD_HASHTAG_POSTS_FAILURE,
+            error: err.response.data
+        })
+    }     
+}
+
+function loadUserPostsAPI (data,lastId) {
+    return axios.get(`/user/${data}/posts?lastId=${lastId || 0}`);
+}
+
+function* loadUserPosts(action) {
+    try{
+        const result = yield call(loadUserPostsAPI,action.data,action.lastId);
+        yield put({
+            type: LOAD_USER_POSTS_SUCCESS,
+            data: result.data
+        });
+    }catch(err){
+        console.error(err);
+        yield put({
+            type: LOAD_USER_POSTS_FAILURE,
+            error: err.response.data
+        })
+    }     
+}
 
 // loadPosts
 //get에서 데이터를 넣으려면 쿼리스트링 써야함
@@ -173,7 +223,7 @@ function loadPostsAPI (lastId) {
 
 function* loadPosts(action) {
     try{
-        const result = yield call(loadPostsAPI,action.data);
+        const result = yield call(loadPostsAPI,action.lastId);
         yield put({
             type: LOAD_POSTS_SUCCESS,
             data: result.data
@@ -253,6 +303,12 @@ function* watchLoadPost() {
 function* watchLoadPosts() {
     yield throttle(2000,LOAD_POSTS_REQUEST, loadPosts);
 }
+function* watchLoadUserPosts() {
+    yield throttle(2000,LOAD_USER_POSTS_REQUEST, loadUserPosts);
+}
+function* watchLoadHashtagPosts() {
+    yield throttle(2000,LOAD_HASHTAG_POSTS_REQUEST, loadHashtagPosts);
+}
 
 
 export default function* () {
@@ -265,6 +321,8 @@ export default function* () {
         fork(watchRemovePost),
         fork(watchAddComment),
         fork(watchLoadPosts),
+        fork(watchLoadUserPosts),
+        fork(watchLoadHashtagPosts),
         fork(watchLoadPost),
     ])
 }

@@ -1,8 +1,9 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
-const {User ,Post} = require('../models')
+const {User ,Post, Image, Comment} = require('../models')
 const passport = require('passport');
 const {isLoggedIn, isNotLoggedIn} = require('./middlewares')
+const {Op} = require('sequelize')
 
 const router = express.Router();
 
@@ -72,6 +73,52 @@ router.get('/:userId',async (req, res, next) => {
         console.error(error);
         next(error);
     }
+})
+
+router.get('/:userId/posts', async (req, res,next) => {
+    try{
+        const where = {UserId: req.params.userId};
+        if (parseInt(req.query.lastId,10)){    //초기 로딩이 아닐 때
+            //[Op.lt]  sequelize 에서 보다 작은거 사용 할 때
+            where.id = {[Op.lt]: parseInt(req.query.lastId,10)} 
+        }
+        const posts = await Post.findAll({
+            where,
+            //offset 은 단점이있음 
+            limit: 10,
+            order: [['createdAt', 'DESC'], [Comment, 'createdAt','DESC']],
+            include: [{
+                model: User,
+                attributes:['id', 'nickname'],
+            },{
+                model: Image,
+            },{
+                model: Comment,
+                include:[{
+                    model: User,
+                    attributes:['id', 'nickname'],
+                }],
+            },{
+                model: User,
+                as:'Likers',
+                attributes:['id'],
+            },{
+                model: Post,
+                as: 'Retweet',
+                include:[{
+                    model: User,
+                    attributes: ['id', 'nickname'],
+                },{
+                    model: Image,
+                }]
+            }],
+        });
+        res.status(200).json(posts);
+    }catch(error) {
+        console.log(error);
+        next(error);
+    }
+    
 })
 
 //passport.authenticate는 req, res next를 쓸 수 없는데 아래처럼 쓰면 미들웨어를 확장시킬 수 있다. 

@@ -9,9 +9,11 @@ const path = require('path');
 
 const db = require('./models');
 const passportConfig = require('./passport');
+
 const postRouter = require('./routes/post');
 const userRouter = require('./routes/user');
 const postsRouter = require('./routes/posts');
+const hashtagRouter = require('./routes/hashtag');
 
 
 dotenv.config();
@@ -51,6 +53,7 @@ app.get('/', (req, res) => {
 app.use('/posts' ,postsRouter);
 app.use('/post' ,postRouter);
 app.use('/user' ,userRouter);
+app.use('/hashtag' ,hashtagRouter);
 
 
 //애러처리 미들웨어는 기본적으로 존재 (밑에 처럼)

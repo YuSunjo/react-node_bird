@@ -1,49 +1,57 @@
 import produce from "immer";
 
 export const initialState = {
+  loadMyInfoLoading: false, // 유저 정보 가져오기 시도중
+  loadMyInfoDone: false,
+  loadMyInfoError: null,
 
-    loadUserLoading: false, // 유저 정보 가져오기 시도중
-    loadUserDone: false,
-    loadUserError: null,
+  loadUserLoading: false, // 유저 정보 가져오기 시도중
+  loadUserDone: false,
+  loadUserError: null,
 
-    followLoading: false, // 팔로우 시도중
-    followDone: false,
-    followError: null,
-    unfollowLoading: false, // 언팔로우 시도중
-    unfollowDone: false,
-    unfollowError: null,
+  followLoading: false, // 팔로우 시도중
+  followDone: false,
+  followError: null,
+  unfollowLoading: false, // 언팔로우 시도중
+  unfollowDone: false,
+  unfollowError: null,
 
-    logInLoading: false, // 로그인 시도중
-    logInDone: false,
-    logInError: null,
-    logOutLoading: false, // 로그아웃 시도중
-    logOutDone: false,
-    logOutError: null,
+  logInLoading: false, // 로그인 시도중
+  logInDone: false,
+  logInError: null,
+  logOutLoading: false, // 로그아웃 시도중
+  logOutDone: false,
+  logOutError: null,
 
-    signUpLoading: false, // 회원가입 시도중
-    signUpDone: false,
-    signUpError: null,
+  signUpLoading: false, // 회원가입 시도중
+  signUpDone: false,
+  signUpError: null,
 
-    changeNicknameLoading: false, // 닉네임 변경 시도중
-    changeNicknameDone: false,
-    changeNicknameError: null,
+  changeNicknameLoading: false, // 닉네임 변경 시도중
+  changeNicknameDone: false,
+  changeNicknameError: null,
 
-    loadFollowingsLoading: false, // 닉네임 변경 시도중
-    loadFollowingsDone: false,
-    loadFollowingsError: null,
+  loadFollowingsLoading: false, // 닉네임 변경 시도중
+  loadFollowingsDone: false,
+  loadFollowingsError: null,
 
-    loadFollowersLoading: false, // 닉네임 변경 시도중
-    loadFollowersDone: false,
-    loadFollowersError: null,
+  loadFollowersLoading: false, // 닉네임 변경 시도중
+  loadFollowersDone: false,
+  loadFollowersError: null,
 
-    removeFollowerLoading: false, // 닉네임 변경 시도중
-    removeFollowerDone: false,
-    removeFollowerError: null,
-    me: null,
-    signUpData: {},
-    loginData: {},
+  removeFollowerLoading: false, // 닉네임 변경 시도중
+  removeFollowerDone: false,
+  removeFollowerError: null,
+  me: null,
+  userInfo: null,
+  signUpData: {},
+  loginData: {},
 
 }
+
+export const LOAD_MY_INFO_REQUEST = 'LOAD_MY_INFO_REQUEST';
+export const LOAD_MY_INFO_SUCCESS = 'LOAD_MY_INFO_SUCCESS';
+export const LOAD_MY_INFO_FAILURE = 'LOAD_MY_INFO_FAILURE';
 
 export const LOAD_USER_REQUEST = 'LOAD_USER_REQUEST';
 export const LOAD_USER_SUCCESS = 'LOAD_USER_SUCCESS';
@@ -157,6 +165,20 @@ const reducer = (state= initialState, action) => {
             draft.loadFollowingsLoading = false;
             draft.loadFollowingsError = action.error;
             break;
+          case LOAD_MY_INFO_REQUEST:
+            draft.loadMyInfoLoading = true;
+            draft.loadMyInfoError = null;
+            draft.loadMyInfoDone = false;
+            break;
+          case LOAD_MY_INFO_SUCCESS:
+            draft.loadMyInfoLoading = false;
+            draft.me = action.data;
+            draft.loadMyInfoDone = true;
+            break;
+          case LOAD_MY_INFO_FAILURE:
+            draft.loadMyInfoLoading = false;
+            draft.loadMyInfoError = action.error;
+            break;
           case LOAD_USER_REQUEST:
             draft.loadUserLoading = true;
             draft.loadUserError = null;
@@ -164,7 +186,7 @@ const reducer = (state= initialState, action) => {
             break;
           case LOAD_USER_SUCCESS:
             draft.loadUserLoading = false;
-            draft.me = action.data;
+            draft.userInfo = action.data;
             draft.loadUserDone = true;
             break;
           case LOAD_USER_FAILURE:

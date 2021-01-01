@@ -6,8 +6,9 @@ import PostForm from '../components/PostForm'
 import PostCard from '../components/PostCard'
 import { useEffect } from 'react';
 import { LOAD_POSTS_REQUEST } from '../reducers/post';
-import { LOAD_USER_REQUEST } from '../reducers/user';
+import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
 import wrapper from '../store/configureStore';
+import axios from 'axios';
 
 //Next 는 import React from 'react'이게 필요가 없다.
 const Home = () => {
@@ -56,8 +57,15 @@ const Home = () => {
 //화면을 그리기 전에 서버쪽에서 먼저 실행
 //dispatch 해준 부분을 hydrate로 보내줌 
 export const getServerSideProps = wrapper.getServerSideProps(async (context) => {
+    //쿠키까지 전달해야지 로그인이 유지된다.
+    //그냥 axios.defaults.headers.Cookie = cookie로 하면 내 로그인 정보를 다른 사람이 다 쓰게 된다...
+    const cookie = context.req ? context.req.headers.cookie : '';
+    axios.defaults.headers.Cookie = '';
+    if(context.req && cookie){
+        axios.defaults.headers.Cookie = cookie;
+    }
     context.store.dispatch({
-        type: LOAD_USER_REQUEST,
+        type: LOAD_MY_INFO_REQUEST,
     });
     context.store.dispatch({
         type: LOAD_POSTS_REQUEST,

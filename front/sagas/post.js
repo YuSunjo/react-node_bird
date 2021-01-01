@@ -11,6 +11,10 @@ import {
     LOAD_POSTS_FAILURE,
     LOAD_POSTS_REQUEST,
     LOAD_POSTS_SUCCESS,
+    LOAD_POST_FAILURE,
+    LOAD_POST_REQUEST,
+    LOAD_POST_SUCCESS,
+
     REMOVE_POST_FAILURE,
     REMOVE_POST_REQUEST,
     REMOVE_POST_SUCCESS,
@@ -141,6 +145,25 @@ function* addComment(action) {
         })
     }     
 }
+function loadPostAPI (data) {
+    return axios.get(`/post/${data}`);
+}
+
+function* loadPost(action) {
+    try{
+        const result = yield call(loadPostAPI,action.data);
+        yield put({
+            type: LOAD_POST_SUCCESS,
+            data: result.data
+        });
+    }catch(err){
+        console.error(err);
+        yield put({
+            type: LOAD_POST_FAILURE,
+            error: err.response.data
+        })
+    }     
+}
 
 // loadPosts
 //get에서 데이터를 넣으려면 쿼리스트링 써야함
@@ -224,6 +247,9 @@ function* watchAddComment() {
 function* watchRemovePost() {
     yield takeLatest(REMOVE_POST_REQUEST, removePost);
 }
+function* watchLoadPost() {
+    yield takeLatest(LOAD_POST_REQUEST, loadPost);
+}
 function* watchLoadPosts() {
     yield throttle(2000,LOAD_POSTS_REQUEST, loadPosts);
 }
@@ -239,5 +265,6 @@ export default function* () {
         fork(watchRemovePost),
         fork(watchAddComment),
         fork(watchLoadPosts),
+        fork(watchLoadPost),
     ])
 }

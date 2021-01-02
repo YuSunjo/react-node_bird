@@ -1,9 +1,12 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import { Menu ,Input, Row, Col } from 'antd';
 import styled, {createGlobalStyle} from 'styled-components'
 import {useSelector} from 'react-redux'
+
+import useInput from '../hooks/useInput';
+import Router from 'next/router';
 
 import UserProfile from '../components/UserProfile'
 import LoginForm from '../components/LoginForm'
@@ -32,10 +35,18 @@ const SearchInput = styled(Input.Search)`
 
 const AppLayout = ( {children} ) => {
     // const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    const [searchInput, onChangeSearchInput] = useInput('');
+
     
     //구조분해 할 수도 있다. 
     const { me } =useSelector((state) => state.user);
     // const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+
+    const onSearch = useCallback(() => {
+        console.log('searchInput',searchInput);
+        Router.push(`/hashtag/${searchInput}`)
+    },[searchInput])
 
     return (
         <div>
@@ -48,7 +59,7 @@ const AppLayout = ( {children} ) => {
                     <Link href="/profile"><a>프로필</a></Link>
                 </Menu.Item>
                 <Menu.Item>
-                    <SearchInput enterButton/>
+                    <SearchInput enterButton value={searchInput} onChange={onChangeSearchInput} onSearch={onSearch} />
                 </Menu.Item>
                 <Menu.Item>
                     <Link href="/signup"><a>회원가입</a></Link>

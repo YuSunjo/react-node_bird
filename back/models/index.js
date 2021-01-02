@@ -25,6 +25,13 @@
 //     db[model.name] = model;
 //   });
 
+//최신 문법 **************** 다른것도 이런식으로 쓰면 된다. 
+// const comment = require('./comment');
+// db.Comment = comment
+// Object.keys(db).forEach(modelName => {
+//   db[modelName].init(sequelize);
+// })
+
 const Sequelize = require('sequelize');
 const env = process.env.NODE_ENV || 'development';
 const config = require('../config/config')[env];

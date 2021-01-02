@@ -14,7 +14,7 @@ import Link from 'next/link'
 import moment from 'moment';
 
 
-//한글로 변경
+//한글로 변경  -- build할 때 필요 없는거 지우고 싶을 때 moment locale tree shaking
 moment.locale('ko');
 
 function PostCard({ post }) {

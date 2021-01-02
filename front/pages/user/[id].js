@@ -88,6 +88,8 @@ const User = () => {
   );
 };
 
+
+//동적 라우팅에서 getStaticProps 쓴다면 getStaticPaths()가 필요하다. 
 export const getServerSideProps = wrapper.getServerSideProps(async (context) => {
   const cookie = context.req ? context.req.headers.cookie : '';
   axios.defaults.headers.Cookie = '';

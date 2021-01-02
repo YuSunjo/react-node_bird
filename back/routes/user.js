@@ -40,6 +40,41 @@ router.get('/',async (req, res, next) => {
     }
 });
 
+// 미들웨어는 위에서부터 아래로 왼쪽부터 오른쪽으로 :userId 이런것이 followers일 수도 있다고 판단해서
+//   그냥 경로는 prams 보다 위에 있어야 한다. 
+router.get('/followers', isLoggedIn,async(req,res, next) => {
+    try {
+        const user = await User.findOne({where: {id: req.user.id}});
+        if(!user){
+            res.status(403).send('없는 사람을 팔로우하려고 합니다.');
+        }
+        const followers = await user.getFollowers({
+            limit: parseInt(req.query.limit,10),
+        });
+        res.status(200).json(followers);
+    }catch(error){
+        console.error(error);
+        next(error);
+    }
+});
+
+router.get('/followings', isLoggedIn,async(req,res, next) => {
+    try {
+        const user = await User.findOne({where: {id: req.user.id}});
+        if(!user){
+            res.status(403).send('없는 사람을 팔로우하려고 합니다.');
+        }
+        const followings = await user.getFollowings({
+            limit: parseInt(req.query.limit,10),
+        });
+        res.status(200).json(followings);
+    }catch(error){
+        console.error(error);
+        next(error);
+    }
+});
+
+
 router.get('/:userId',async (req, res, next) => {
     try{
         const fullUserWithoutPassword = await User.findOne({
@@ -204,6 +239,7 @@ router.patch('/nickname', isLoggedIn,async(req,res, next) => {
     }
 })
 
+
 router.patch('/:userId/follow', isLoggedIn,async(req,res, next) => {
     try {
         const user = await User.findOne({where: {id: req.params.userId}});
@@ -232,33 +268,7 @@ router.delete('/:userId/follow', isLoggedIn,async(req,res, next) => {
     }
 });
 
-router.get('/followers', isLoggedIn,async(req,res, next) => {
-    try {
-        const user = await User.findOne({where: {id: req.user.id}});
-        if(!user){
-            res.status(403).send('없는 사람을 팔로우하려고 합니다.');
-        }
-        const followers = await user.getFollowers();
-        res.status(200).json(followers);
-    }catch(error){
-        console.error(error);
-        next(error);
-    }
-});
 
-router.get('/followings', isLoggedIn,async(req,res, next) => {
-    try {
-        const user = await User.findOne({where: {id: req.user.id}});
-        if(!user){
-            res.status(403).send('없는 사람을 팔로우하려고 합니다.');
-        }
-        const followings = await user.getFollowings();
-        res.status(200).json(followings);
-    }catch(error){
-        console.error(error);
-        next(error);
-    }
-});
 
 router.delete('/follower/:userId', isLoggedIn,async(req,res, next) => {
     try {

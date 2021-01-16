@@ -1,6 +1,6 @@
 import { Model, DataTypes } from 'sequelize';
 
-export default class Comment extends Model {
+export default class Image extends Model {
   static init(sequelize) {
     return super.init(
       {

@@ -1,9 +1,9 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import bodyParser from 'body-parser';
 dotenv.config();
 import router from './routes/index';
 import db from '@src/models';
+import cors from 'cors';
 // const db = require('@src/models');
 
 class App {
@@ -42,8 +42,14 @@ class App {
   }
 
   setMiddleWare() {
-    this.app.use(bodyParser.json());
-    this.app.use(bodyParser.urlencoded({ extended: false }));
+    this.app.use(express.json());
+    this.app.use(express.urlencoded({ extended: true }));
+    this.app.use(
+      cors({
+        origin: '*',
+        credentials: false,
+      })
+    );
   }
 
   setStatic() {

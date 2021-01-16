@@ -3,10 +3,15 @@ import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 dotenv.config();
 import router from './routes/index';
+import db from '@src/models';
+// const db = require('@src/models');
 
 class App {
   constructor() {
     this.app = express();
+
+    //dbsync
+    this.setDatabase();
 
     //미들웨어 세팅
     this.setMiddleWare();
@@ -25,6 +30,15 @@ class App {
 
     //error
     this.errorHandler();
+  }
+
+  setDatabase() {
+    db.sequelize
+      .sync()
+      .then(() => {
+        console.log('연결성공');
+      })
+      .catch(console.error);
   }
 
   setMiddleWare() {

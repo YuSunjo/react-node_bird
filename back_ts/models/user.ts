@@ -35,3 +35,5 @@ User.init({
 export const associate = (db: dbType) => {
 
 };
+
+export default User;

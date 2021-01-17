@@ -1,15 +1,10 @@
-import db from '@src/models';
-import User from '@src/models/user';
 import bcrypt from 'bcrypt';
 import passport from 'passport';
+import { saveUser, findOneUser } from '@src/repository/userRepository';
 
 export const post_userService = async (email, nickname, password) => {
   const hashedPassword = await bcrypt.hash(password, 10);
-  const createUser = await User.create({
-    email,
-    nickname,
-    password: hashedPassword,
-  });
+  const createUser = saveUser(email, nickname, hashedPassword);
   return createUser;
 };
 
@@ -27,25 +22,7 @@ export const longin_userService = (req, res, next) => {
         console.error(loginErr);
         return next(loginErr);
       }
-      const fullUserWithoutPassword = await User.findOne({
-        where: { id: user.id },
-        attributes: {
-          exclude: ['password'],
-        },
-        include: [
-          {
-            model: db.Post,
-          },
-          {
-            model: db.User,
-            as: 'Followings',
-          },
-          {
-            model: db.User,
-            as: 'Followers',
-          },
-        ],
-      });
+      const fullUserWithoutPassword = findOneUser(user);
       return res.status(200).json(fullUserWithoutPassword);
     });
   })(req, res, next);

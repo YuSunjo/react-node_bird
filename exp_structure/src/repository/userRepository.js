@@ -1,8 +1,8 @@
 import User from '@src/models/user';
 import db from '@src/models';
 
-export const saveUser = async (email, nickname, password) => {
-  return await User.create({
+export const saveUser = (email, nickname, password) => {
+  return User.create({
     email,
     nickname,
     password,

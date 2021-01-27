@@ -1,10 +1,8 @@
-import bcrypt from 'bcrypt';
 import passport from 'passport';
 import { saveUser, findOneUser } from '@src/repository/userRepository';
 
-export const post_userService = async (email, nickname, password) => {
-  const hashedPassword = await bcrypt.hash(password, 10);
-  const createUser = saveUser(email, nickname, hashedPassword);
+export const post_userService = (email, nickname, password) => {
+  const createUser = saveUser(email, nickname, password);
   return createUser;
 };
 

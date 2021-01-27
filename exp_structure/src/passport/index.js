@@ -4,7 +4,7 @@ import User from '@src/models/user';
 
 export default () => {
   passport.serializeUser((user, done) => {
-    done(user.id);
+    done(null, user.id);
   });
 
   passport.deserializeUser(async (id, done) => {

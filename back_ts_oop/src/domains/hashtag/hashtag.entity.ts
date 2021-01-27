@@ -1,5 +1,6 @@
 import AbstractBaseEntity from '@src/domains/base.entity';
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, ManyToMany } from 'typeorm';
+import Post from '../post/post.entity';
 
 @Entity()
 export default class Hashtag extends AbstractBaseEntity {
@@ -9,6 +10,9 @@ export default class Hashtag extends AbstractBaseEntity {
     collation: 'utf8mb4_general_ci',
   })
   private name: string;
+
+  @ManyToMany(() => Post, (post) => post.hashtag)
+  post: Post[];
 
   constructor(name: string) {
     super();

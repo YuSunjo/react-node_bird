@@ -1,5 +1,6 @@
 import AbstractBaseEntity from '@src/domains/base.entity';
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
+import Post from '../post/post.entity';
 
 @Entity()
 export default class Image extends AbstractBaseEntity {
@@ -9,6 +10,9 @@ export default class Image extends AbstractBaseEntity {
     collation: 'utf8_general_ci',
   })
   private src: string;
+
+  @ManyToOne(() => Post, (post) => post.images)
+  post: Post[];
 
   constructor(src: string) {
     super();

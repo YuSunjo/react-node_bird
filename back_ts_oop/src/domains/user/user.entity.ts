@@ -1,6 +1,7 @@
 import AbstractBaseEntity from '@src/domains/base.entity';
-import { Column, Entity, OneToMany } from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany, OneToMany } from 'typeorm';
 import Post from '@src/domains/post/post.entity';
+import Comment from '@src/domains/comment/comment.entity';
 
 @Entity()
 export default class User extends AbstractBaseEntity {
@@ -25,6 +26,23 @@ export default class User extends AbstractBaseEntity {
     collation: 'utf8_general_ci',
   })
   private password: string;
+
+  @OneToMany(() => Post, (post) => post.user)
+  posts: Post[];
+
+  @OneToMany(() => Comment, (comment) => comment.user)
+  comments: Comment[];
+
+  @ManyToMany(() => Post, (post) => post.liker)
+  @JoinTable()
+  liked: Post[];
+
+  @ManyToMany(() => User, (user) => user.following)
+  @JoinTable()
+  follower: User[];
+
+  @ManyToMany(() => User, (user) => user.follower)
+  following: User[];
 
   constructor(email: string, nickname: string, password: string) {
     super();

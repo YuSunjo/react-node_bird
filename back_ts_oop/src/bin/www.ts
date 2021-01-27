@@ -1,7 +1,9 @@
-import app from '@src/app';
+import { App } from '@src/app';
 
-const port: number = Number(process.env.PORT) || 8000;
-
-app.listen(port, () => {
-  console.log(`Server is running at ${port}`);
-});
+try {
+  const app = new App();
+  const port: number = Number(process.env.PORT) || 8000;
+  app.createExpressServer(port);
+} catch (error) {
+  console.error(error);
+}

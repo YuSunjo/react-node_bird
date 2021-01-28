@@ -2,16 +2,28 @@ import { Column, Entity } from 'typeorm';
 import AbstractBaseEntity from '@src/domains/base.entity';
 
 @Entity()
-export class Sample extends AbstractBaseEntity {
+export default class Sample extends AbstractBaseEntity {
   @Column()
-  title: string;
+  private name: string;
 
   @Column()
-  count: number;
+  private description: string;
 
-  constructor(title: string, count: number) {
+  constructor(name: string, description: string) {
     super();
-    this.title = title;
-    this.count = count;
+    this.name = name;
+    this.description = description;
+  }
+
+  static of(name: string, description: string): Sample {
+    return new Sample(name, description);
+  }
+
+  public getName(): string {
+    return this.name;
+  }
+
+  public getDescription(): string {
+    return this.description;
   }
 }

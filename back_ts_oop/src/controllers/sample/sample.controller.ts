@@ -1,5 +1,5 @@
 import ApiResponse from '@src/common/ApiResponse';
-import { CreateSampleDto } from '@src/services/sample/dto/create.sample.dto';
+import { CreateSampleRequestDto } from '@src/services/sample/dto/sample.request.dto';
 import { SampleResponseDto } from '@src/services/sample/dto/sample.response.dto';
 import { SampleService } from '@src/services/sample/sample.service';
 import { Body, Get, HttpCode, Controller, Post } from 'routing-controllers';
@@ -19,7 +19,7 @@ export class SampleController {
   @Post('/sample')
   @HttpCode(201)
   public async save(
-    @Body() createSampleDto: CreateSampleDto
+    @Body() createSampleDto: CreateSampleRequestDto
   ): Promise<ApiResponse<string>> {
     await this.sampleService.save(createSampleDto);
     return ApiResponse.success('ok');

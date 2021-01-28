@@ -9,6 +9,8 @@ import {
 import createDatabaseConnection from './config/database';
 import dotenv from 'dotenv';
 import path from 'path';
+import { routingControllerOptions } from './config/RoutingConfig';
+import { useSwagger } from './config/swagger';
 
 export class App {
   public app: express.Application;
@@ -40,17 +42,13 @@ export class App {
   }
 
   public async createExpressServer(port: number): Promise<void> {
+    routingUseContainer(Container);
+    useExpressServer(this.app, routingControllerOptions);
+    useSwagger(this.app);
+
     try {
-      routingUseContainer(Container);
-      useExpressServer(this.app, {
-        cors: true,
-        controllers: [
-          `${__dirname}/controllers/*{.ts,.js}`,
-          `${__dirname}/controllers/*/*{.ts,.js}`,
-        ],
-      });
       this.app.listen(port, () => {
-        console.log(`listening port on ${port}`);
+        console.log(`Server is running on http://localhost:${port}`);
       });
     } catch (error) {
       console.error(error);

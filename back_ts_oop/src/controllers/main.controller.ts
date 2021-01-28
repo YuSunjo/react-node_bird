@@ -1,4 +1,5 @@
-import { Controller, Get, HttpCode } from 'routing-controllers';
+import ApiResponse from '@src/common/ApiResponse';
+import { Controller, Get, HttpCode, NotFoundError } from 'routing-controllers';
 import { Service } from 'typedi';
 
 @Service()
@@ -6,7 +7,12 @@ import { Service } from 'typedi';
 export class MainController {
   @HttpCode(200)
   @Get('/ping')
-  public ping() {
-    return 'pong';
+  public pint(): ApiResponse<string> {
+    return ApiResponse.success('pong');
+  }
+
+  @Get('/404')
+  public async errorTest() {
+    throw new NotFoundError('Not found exception test');
   }
 }

@@ -64,4 +64,8 @@ export default class User extends AbstractBaseEntity {
   public getPassword() {
     return this.password;
   }
+
+  public static local(email: string, nickname: string, password: string): User {
+    return new User(email, nickname, password);
+  }
 }

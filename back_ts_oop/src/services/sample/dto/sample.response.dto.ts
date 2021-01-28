@@ -1,5 +1,6 @@
 // import Sample from '@src/domains/sample/sample.entity';
 import BaseEntityResponse from '@src/common/base.response.dto';
+import Sample from '@src/domains/sample/sample.entity';
 
 export class SampleResponseDto extends BaseEntityResponse {
   name: string;
@@ -11,7 +12,7 @@ export class SampleResponseDto extends BaseEntityResponse {
     this.description = description;
   }
 
-  static of(sample) {
+  static of(sample: Sample) {
     return new SampleResponseDto(
       sample.getId(),
       sample.getName(),

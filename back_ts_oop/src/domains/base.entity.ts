@@ -1,9 +1,4 @@
-import {
-  CreateDateColumn,
-  Generated,
-  PrimaryColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { CreateDateColumn, Generated, PrimaryColumn, UpdateDateColumn } from 'typeorm';
 
 export default abstract class AbstractBaseEntity {
   @PrimaryColumn()
@@ -15,4 +10,16 @@ export default abstract class AbstractBaseEntity {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  public getId(): number {
+    return this.id;
+  }
+
+  public getCreatedAt(): Date {
+    return this.createdAt;
+  }
+
+  public getUpdatedAt(): Date {
+    return this.updatedAt;
+  }
 }

@@ -2,6 +2,7 @@ import AbstractBaseEntity from '@src/domains/base.entity';
 import { Column, Entity, JoinTable, ManyToMany, OneToMany } from 'typeorm';
 import Post from '@src/domains/post/post.entity';
 import Comment from '@src/domains/comment/comment.entity';
+import { UserProvider } from './user.type';
 
 @Entity()
 export default class User extends AbstractBaseEntity {
@@ -21,11 +22,17 @@ export default class User extends AbstractBaseEntity {
   private nickname: string;
 
   @Column({
-    nullable: false,
+    nullable: true,
     charset: 'utf8',
     collation: 'utf8_general_ci',
   })
   private password: string;
+
+  @Column({ nullable: true })
+  private profileUrl: string;
+
+  @Column()
+  private provider: UserProvider;
 
   @OneToMany(() => Post, (post) => post.user)
   posts: Post[];
@@ -44,15 +51,21 @@ export default class User extends AbstractBaseEntity {
   @ManyToMany(() => User, (user) => user.follower)
   following: User[];
 
-  constructor(email: string, nickname: string, password: string) {
+  constructor(email: string, nickname: string, password: string, profileUrl: string, provider: UserProvider) {
     super();
     this.email = email;
     this.nickname = nickname;
     this.password = password;
+    this.profileUrl = profileUrl;
+    this.provider = provider;
   }
 
-  public static of(email: string, nickname: string, password: string): User {
-    return new User(email, nickname, password);
+  public static local(email: string, nickname: string, password: string): User {
+    return new User(email, nickname, password, null, UserProvider.LOCAL);
+  }
+
+  public static google(email: string, nickname: string, profileUrl: string) {
+    return new User(email, nickname, null, profileUrl, UserProvider.GOOGLE);
   }
 
   public getEmail() {
@@ -64,8 +77,7 @@ export default class User extends AbstractBaseEntity {
   public getPassword() {
     return this.password;
   }
-
-  public static local(email: string, nickname: string, password: string): User {
-    return new User(email, nickname, password);
+  public getProfileUrl() {
+    return this.profileUrl;
   }
 }

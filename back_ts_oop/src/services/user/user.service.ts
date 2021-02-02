@@ -15,4 +15,14 @@ export default class UserService {
     const user = User.local(email, nickname, hashedPassword);
     await this.userRepository.save(user);
   }
+
+  public async getUser(userId: number) {
+    if (userId) {
+      const fullUserWithoutPassword = await this.userRepository.findOne({
+        where: { id: userId },
+      });
+    } else {
+      return null;
+    }
+  }
 }

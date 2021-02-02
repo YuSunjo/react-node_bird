@@ -1,12 +1,5 @@
 import AbstractBaseEntity from '@src/domains/base.entity';
-import {
-  Column,
-  Entity,
-  JoinTable,
-  ManyToMany,
-  ManyToOne,
-  OneToMany,
-} from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany } from 'typeorm';
 import User from '../user/user.entity';
 import Comment from '@src/domains/comment/comment.entity';
 import Image from '../image/image.entity';

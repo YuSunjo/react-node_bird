@@ -40,16 +40,21 @@ export default class Post extends AbstractBaseEntity {
   @ManyToOne(() => Post, (post) => post.post)
   retweet: Post[];
 
-  constructor(content: string) {
+  constructor(content: string, user: User) {
     super();
     this.content = content;
+    this.user = user;
   }
 
-  public static of(content: string): Post {
-    return new Post(content);
+  public static of(content: string, user: User): Post {
+    return new Post(content, user);
   }
 
   public getContent() {
     return this.content;
+  }
+
+  public getUserId() {
+    return this.user;
   }
 }

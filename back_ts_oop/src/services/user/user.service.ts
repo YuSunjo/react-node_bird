@@ -17,12 +17,7 @@ export default class UserService {
   }
 
   public async getUser(userId: number) {
-    if (userId) {
-      const fullUserWithoutPassword = await this.userRepository.findOne({
-        where: { id: userId },
-      });
-    } else {
-      return null;
-    }
+    const user = userServiceUtils.findUserById(this.userRepository, userId);
+    //유저의 포스트, 댓글들 ... 이런거
   }
 }

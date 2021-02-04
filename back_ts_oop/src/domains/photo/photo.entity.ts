@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import Author from '../Author/author.entity';
 import AbstractBaseEntity from '../base.entity';
 
@@ -8,6 +8,7 @@ export default class Photo extends AbstractBaseEntity {
   private src: string;
 
   @ManyToOne((type) => Author, (author) => author.photos)
+  @JoinColumn()
   author: Author;
 
   constructor(src: string, author: Author) {
@@ -22,5 +23,9 @@ export default class Photo extends AbstractBaseEntity {
 
   public getSrc() {
     return this.src;
+  }
+
+  public getAuthor() {
+    return this.author;
   }
 }

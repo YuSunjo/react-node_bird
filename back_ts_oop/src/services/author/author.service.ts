@@ -1,4 +1,5 @@
 import AuthorRepository from '@src/domains/Author/author.repository';
+import PhotoToAuthor from '@src/domains/postToCategory/photoToAuthor.repository';
 import { Service } from 'typedi';
 import { InjectRepository } from 'typeorm-typedi-extensions';
 import { AuthorRegisterRequest } from './dto/author.request.dto';

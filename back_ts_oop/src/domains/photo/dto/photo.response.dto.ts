@@ -21,9 +21,9 @@ export class PhotoResponse extends BaseEntityResponse {
 
 export class RetrievePhotoResponse extends BaseEntityResponse {
   private readonly src: string;
-  private readonly author: Author;
+  private readonly author: number;
 
-  constructor(id: number, src: string, author: Author, createdAt: Date, updatedAt: Date) {
+  constructor(id: number, src: string, author: number, createdAt: Date, updatedAt: Date) {
     super(id, createdAt, updatedAt);
     this.src = src;
     this.author = author;

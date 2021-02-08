@@ -1,4 +1,5 @@
 import Author from '@src/domains/Author/author.entity';
+import PhotoToAuthor from '@src/domains/postToCategory/postToAuthor.entity';
 import { IsString } from 'class-validator';
 
 export class AuthorRegisterRequest {
@@ -11,5 +12,9 @@ export class AuthorRegisterRequest {
 
   public toEntity(): Author {
     return Author.of(this.name);
+  }
+
+  public toPhotoAuthor(photoId, authorId): PhotoToAuthor {
+    return PhotoToAuthor.of(photoId, authorId);
   }
 }

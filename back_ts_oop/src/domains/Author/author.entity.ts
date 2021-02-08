@@ -1,6 +1,7 @@
-import { Column, Entity, OneToMany } from 'typeorm';
+import { Column, Entity, ManyToMany, OneToMany } from 'typeorm';
 import AbstractBaseEntity from '../base.entity';
 import Photo from '../photo/photo.entity';
+import PhotoToAuthor from '../postToCategory/postToAuthor.entity';
 
 @Entity()
 export default class Author extends AbstractBaseEntity {
@@ -9,6 +10,9 @@ export default class Author extends AbstractBaseEntity {
 
   @OneToMany((type) => Photo, (photo) => photo.author)
   photos: Photo[];
+
+  @OneToMany(() => PhotoToAuthor, (photoToAuthor) => photoToAuthor.author)
+  photoToAuthor: PhotoToAuthor[];
 
   constructor(name: string) {
     super();

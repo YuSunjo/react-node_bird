@@ -11,7 +11,7 @@ export default class PhotoController {
   constructor(private readonly photoService: PhotoService) {}
 
   @Post('/photo/:authorId')
-  public async registerPhoto(@Body() request: PhotoRegisterRequest, @Param('authorId') authorId: Author) {
+  public async registerPhoto(@Body() request: PhotoRegisterRequest, @Param('authorId') authorId: number) {
     const response = await this.photoService.registerPhoto(request, authorId);
     return ApiResponse.success(response);
   }

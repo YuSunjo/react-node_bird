@@ -1,17 +1,52 @@
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
+import { Comment } from '../comment/commet.entity';
 import { CoreEntity } from '../core.entity';
+import { Follow } from '../follow/follow.entity';
+import { Like } from '../like/like.entity';
+import { Post } from '../post/post.entity';
 
 @Entity()
 export class Member extends CoreEntity {
-  @Column()
-  private name: string;
+  @Column({ unique: true })
+  private email: string;
 
-  constructor(name: string) {
+  @Column()
+  private nickname: string;
+
+  @Column()
+  private password: string;
+
+  @OneToMany((type) => Post, (post) => post.member)
+  posts: Post[];
+
+  @OneToMany((type) => Comment, (comment) => comment.member)
+  comments: Comment[];
+
+  @OneToMany((type) => Follow, (follow) => follow.following)
+  followings: Follow[];
+
+  @OneToMany((type) => Follow, (follow) => follow.follower)
+  followers: Follow[];
+
+  @OneToMany((type) => Like, (like) => like.member)
+  likes: Like[];
+
+  constructor(email: string, nickname: string, password: string) {
     super();
-    this.name = name;
+    this.email = email;
+    this.nickname = nickname;
+    this.password = password;
   }
 
-  public getName(): string {
-    return this.name;
+  public getEmail(): string {
+    return this.email;
+  }
+
+  public getNickname(): string {
+    return this.nickname;
+  }
+
+  public getPassword(): string {
+    return this.password;
   }
 }

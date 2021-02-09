@@ -7,6 +7,8 @@ import createDatabaseConnection from '@src/config/database';
 import { routingControllerOptions } from '@src/config/routing';
 import { useSwagger } from '@src/config/swagger';
 import logger from '@src/config/logger';
+import cookieParser from 'cookie-parser';
+import session from 'express-session';
 
 export default class App {
   private app: express.Application;
@@ -28,6 +30,14 @@ export default class App {
   private setUpMiddleWares(): void {
     this.app.use(bodyParser.json());
     this.app.use(bodyParser.urlencoded({ extended: false }));
+    this.app.use(cookieParser(process.env.COOKIE_SECRET));
+    this.app.use(
+      session({
+        saveUninitialized: false,
+        resave: false,
+        secret: process.env.COOKIE_SECRET,
+      })
+    );
   }
 
   public async runServer(port: number): Promise<void> {

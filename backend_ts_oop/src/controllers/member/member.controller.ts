@@ -1,5 +1,6 @@
 import { ApiResponse } from '@src/common/dto/api.response.dto';
-import { signUpUserRequestDto } from '@src/services/dto/member.request.dto';
+import { loginUserRequest, signUpUserRequestDto } from '@src/services/dto/member.request.dto';
+import { LoginUserResponse } from '@src/services/dto/member.response.dto';
 import { MemberService } from '@src/services/member/member.service';
 import { Body, Get, JsonController, Post } from 'routing-controllers';
 import { Service } from 'typedi';
@@ -18,5 +19,11 @@ export class MemberController {
   public async signUpUser(@Body() request: signUpUserRequestDto) {
     await this.memberService.signUpUser(request);
     return ApiResponse.success();
+  }
+
+  @Post('/user/login')
+  public async loginUser(@Body() request: loginUserRequest): Promise<ApiResponse<LoginUserResponse>> {
+    const response = await this.memberService.loginUser(request);
+    return ApiResponse.success(response);
   }
 }

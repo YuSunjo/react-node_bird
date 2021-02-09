@@ -36,3 +36,24 @@ export class signUpUserRequestDto {
     return this.nickname;
   }
 }
+
+export class loginUserRequest {
+  @IsEmail({}, { message: '이메일을 다시 확인해주세요' })
+  private readonly email: string;
+
+  @IsString({ message: '비밀번호를 확인해주세요' })
+  private readonly password: string;
+
+  constructor(email: string, password: string) {
+    this.email = email;
+    this.password = password;
+  }
+
+  public getEmail() {
+    return this.email;
+  }
+
+  public getPassword() {
+    return this.password;
+  }
+}

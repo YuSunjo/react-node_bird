@@ -9,8 +9,9 @@ export class MemberServiceUtils {
         email: email,
       },
     });
-    if (email) {
-      throw new NotFoundError('이미 존재하는 이메일입니다.');
+    if (!email) {
+      throw new NotFoundError('해당 이메일이 존재하지 않습니다.');
     }
+    return findMember;
   }
 }

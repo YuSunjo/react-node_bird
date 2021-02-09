@@ -3,11 +3,11 @@ import { Service } from 'typedi';
 import { Repository } from 'typeorm';
 import { InjectRepository } from 'typeorm-typedi-extensions';
 import bcrypt from 'bcrypt';
-import { loginUserRequest, signUpUserRequestDto } from '../dto/member.request.dto';
+import { ChangeNicknameRequest, loginUserRequest, signUpUserRequestDto } from '../dto/member.request.dto';
 import { NotFoundException } from '@src/common/exceptions/custom.exception';
 import { MemberServiceUtils } from './member.service.utils';
 import { JwtTokenUtils } from '@src/common/utils/jwt/jwt.utils';
-import { LoginUserResponse } from '../dto/member.response.dto';
+import { ChangeNicknameResponse, LoginUserResponse } from '../dto/member.response.dto';
 import { PasswordUtils } from '@src/common/utils/password/password.utils';
 
 @Service()
@@ -36,5 +36,12 @@ export class MemberService {
     }
     const token = JwtTokenUtils.encodeToken(findEmail.getId());
     return LoginUserResponse.login(token);
+  }
+
+  public async changeNickname(request: ChangeNicknameRequest, memberId: number): Promise<ChangeNicknameResponse> {
+    const findMember = await MemberServiceUtils.findMemberById(this.memberRepository, memberId);
+    findMember.update(request.getNickname());
+    await this.memberRepository.save(findMember);
+    return ChangeNicknameResponse.of(findMember);
   }
 }

@@ -57,3 +57,16 @@ export class loginUserRequest {
     return this.password;
   }
 }
+
+export class ChangeNicknameRequest {
+  @IsString({ message: '닉네임을 확인해주세요' })
+  private readonly nickname: string;
+
+  constructor(nickname: string) {
+    this.nickname = nickname;
+  }
+
+  public getNickname() {
+    return this.nickname;
+  }
+}

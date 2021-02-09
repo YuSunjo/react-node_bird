@@ -57,4 +57,10 @@ export class Member extends CoreEntity {
   public getPassword(): string {
     return this.password;
   }
+
+  public update(nickname: string) {
+    if (nickname) {
+      this.nickname = nickname;
+    }
+  }
 }

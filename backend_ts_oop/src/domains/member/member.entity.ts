@@ -38,6 +38,14 @@ export class Member extends CoreEntity {
     this.password = password;
   }
 
+  public static login(email: string, nickname: string, password: string): Member {
+    return new Member(email, nickname, password);
+  }
+
+  public static of(email: string, nickname: string, password: string): Member {
+    return new Member(email, nickname, password);
+  }
+
   public getEmail(): string {
     return this.email;
   }

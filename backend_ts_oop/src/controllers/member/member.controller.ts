@@ -15,7 +15,7 @@ export class MemberController {
     return ApiResponse.success();
   }
 
-  @Post('/')
+  @Post()
   public async signUpUser(@Body() request: signUpUserRequestDto) {
     await this.memberService.signUpUser(request);
     return ApiResponse.success();

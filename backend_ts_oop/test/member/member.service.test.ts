@@ -58,7 +58,8 @@ describe('MemberServiceTest', () => {
       const response = await memberService.loginUser(new loginUserRequest(email, password));
 
       //then
-      expect(response).not.toBeNull();
+      const member = await memberRepository.find();
+      expect(member.length).toBe(1);
     });
   });
 
@@ -86,6 +87,20 @@ describe('MemberServiceTest', () => {
         expect(error.httpCode).toBe(404);
         expect(error.name).toBe('NOT_FOUND_EXCEPTION');
       }
+    });
+  });
+  describe('getMember', () => {
+    test('로그인 하고 유저정보를 가져온다.', async () => {
+      //given
+      const memberId = 1;
+      await memberRepository.save([Member.of('tnswh@naver.com', 'tnswh', 'password')]);
+
+      //when
+      const user = await memberService.getMember(memberId);
+
+      //then
+      expect(user.getEmail()).toBe('tnswh@naver.com');
+      expect(user.getNickname()).toBe('tnswh');
     });
   });
 });

@@ -1,4 +1,6 @@
+import { Follow } from '@src/domains/follow/follow.entity';
 import { Member } from '@src/domains/member/member.entity';
+import { Post } from '@src/domains/post/post.entity';
 
 export class LoginUserResponse {
   private token: string;
@@ -25,5 +27,51 @@ export class ChangeNicknameResponse {
 
   public getNickname() {
     return this.nickname;
+  }
+}
+
+export class FullMemberWithoutPassword {
+  private readonly email: string;
+  private readonly nickname: string;
+  private readonly posts: Post[];
+  private readonly followings: Follow[];
+  private readonly followers: Follow[];
+
+  constructor(email: string, nickname: string, posts: Post[], followings: Follow[], followers: Follow[]) {
+    this.email = email;
+    this.nickname = nickname;
+    this.posts = posts;
+    this.followings = followings;
+    this.followers = followers;
+  }
+
+  public static of(member: Member) {
+    return new FullMemberWithoutPassword(
+      member.getEmail(),
+      member.getNickname(),
+      member.posts,
+      member.followings,
+      member.followers
+    );
+  }
+
+  public getEmail() {
+    return this.email;
+  }
+
+  public getNickname() {
+    return this.nickname;
+  }
+
+  public getPosts() {
+    return this.posts;
+  }
+
+  public getFollowers() {
+    return this.followers;
+  }
+
+  public getFollowings() {
+    return this.followings;
   }
 }

@@ -7,12 +7,20 @@ import { ChangeNicknameRequest, loginUserRequest, signUpUserRequestDto } from '.
 import { NotFoundException } from '@src/common/exceptions/custom.exception';
 import { MemberServiceUtils } from './member.service.utils';
 import { JwtTokenUtils } from '@src/common/utils/jwt/jwt.utils';
-import { ChangeNicknameResponse, LoginUserResponse } from '../dto/member.response.dto';
+import { ChangeNicknameResponse, FullMemberWithoutPassword, LoginUserResponse } from '../dto/member.response.dto';
 import { PasswordUtils } from '@src/common/utils/password/password.utils';
 
 @Service()
 export class MemberService {
   constructor(@InjectRepository(Member) private readonly memberRepository: Repository<Member>) {}
+
+  public async getMember(memberId: number) {
+    const fullUserWithoutPassword = await this.memberRepository.findOne({
+      relations: ['posts', 'followings', 'followers'],
+      where: { id: memberId },
+    });
+    return FullMemberWithoutPassword.of(fullUserWithoutPassword);
+  }
 
   public async signUpUser(request: signUpUserRequestDto): Promise<void> {
     const exUser = await this.memberRepository.findOne({

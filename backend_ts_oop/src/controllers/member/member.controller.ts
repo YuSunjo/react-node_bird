@@ -6,16 +6,17 @@ import { Body, CurrentUser, Get, JsonController, Patch, Post } from 'routing-con
 import { Service } from 'typedi';
 
 @Service()
-@JsonController('/user')
+@JsonController()
 export class MemberController {
   constructor(private readonly memberService: MemberService) {}
 
-  @Get('/api/v1')
-  public async test() {
-    return ApiResponse.success();
+  @Get('/user')
+  public async getAll(@CurrentUser() memberId: number) {
+    const response = await this.memberService.getMember(memberId);
+    return ApiResponse.success(response);
   }
 
-  @Post()
+  @Post('/user')
   public async signUpUser(@Body() request: signUpUserRequestDto) {
     await this.memberService.signUpUser(request);
     return ApiResponse.success();
@@ -29,7 +30,7 @@ export class MemberController {
 
   //Post logout
 
-  @Patch('/nickname')
+  @Patch('/user/nickname')
   public async changeNickname(
     @Body() request: ChangeNicknameRequest,
     @CurrentUser() memberId: number

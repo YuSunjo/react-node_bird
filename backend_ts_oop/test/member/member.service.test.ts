@@ -11,6 +11,7 @@ import { MemberCreator } from '../../src/domains/member/member.creator';
 import { PasswordUtils } from '../../src/common/utils/password/password.utils';
 import { NotFoundException } from '../../src/common/exceptions/custom.exception';
 import { BaseException } from '../../src/common/exceptions/base.exception';
+import { Follow } from '../../src/domains/follow/follow.entity';
 
 describe('MemberServiceTest', () => {
   let connection: Connection;
@@ -102,5 +103,21 @@ describe('MemberServiceTest', () => {
       expect(user.getEmail()).toBe('tnswh@naver.com');
       expect(user.getNickname()).toBe('tnswh');
     });
+  });
+
+  describe('userFollower', () => {
+    test('팔로우 버튼 눌렀을 때 정보 가져오기', async () => {
+      //given
+      const memberId = 1;
+      await memberRepository.save([Member.of('tnswh@naver.com', 'tnswh', 'password')]);
+
+      //when
+
+      //then
+    });
+  });
+
+  describe('getMemberOne', () => {
+    test('user/:memberId  1번의 아이디를 가져온다.', async () => {});
   });
 });

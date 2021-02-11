@@ -75,3 +75,27 @@ export class FullMemberWithoutPassword {
     return this.followings;
   }
 }
+
+export class FollowersResponse {
+  private readonly followers: Follow[];
+
+  constructor(followers: Follow[]) {
+    this.followers = followers;
+  }
+
+  public static of(member: Member) {
+    return new FollowersResponse(member.followers);
+  }
+}
+
+export class FollowingsResponse {
+  private readonly followings: Follow[];
+
+  constructor(followings: Follow[]) {
+    this.followings = followings;
+  }
+
+  public static of(member: Member) {
+    return new FollowingsResponse(member.followings);
+  }
+}

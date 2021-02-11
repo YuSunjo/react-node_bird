@@ -7,12 +7,19 @@ import { ChangeNicknameRequest, loginUserRequest, signUpUserRequestDto } from '.
 import { NotFoundException } from '@src/common/exceptions/custom.exception';
 import { MemberServiceUtils } from './member.service.utils';
 import { JwtTokenUtils } from '@src/common/utils/jwt/jwt.utils';
-import { ChangeNicknameResponse, FullMemberWithoutPassword, LoginUserResponse } from '../dto/member.response.dto';
+import {
+  ChangeNicknameResponse,
+  FollowersResponse,
+  FollowingsResponse,
+  FullMemberWithoutPassword,
+  LoginUserResponse,
+} from '../dto/member.response.dto';
 import { PasswordUtils } from '@src/common/utils/password/password.utils';
+import { MemberRepository } from '@src/domains/member/member.repository';
 
 @Service()
 export class MemberService {
-  constructor(@InjectRepository(Member) private readonly memberRepository: Repository<Member>) {}
+  constructor(@InjectRepository(Member) private readonly memberRepository: MemberRepository) {}
 
   public async getMember(memberId: number) {
     const fullUserWithoutPassword = await this.memberRepository.findOne({
@@ -51,5 +58,29 @@ export class MemberService {
     findMember.update(request.getNickname());
     await this.memberRepository.save(findMember);
     return ChangeNicknameResponse.of(findMember);
+  }
+
+  public async userFollower(memberId: number, limit: number) {
+    const findMember = await MemberServiceUtils.findMemberById(this.memberRepository, memberId);
+    const followers = await this.memberRepository.getFollower(memberId, limit);
+    return followers.map((follower) => {
+      return FollowersResponse.of(follower);
+    });
+  }
+
+  public async userFollowing(memberId: number, limit: number) {
+    await MemberServiceUtils.findMemberById(this.memberRepository, memberId);
+    const followings = await this.memberRepository.getFollowing(memberId, limit);
+    return followings.map((following) => {
+      return FollowingsResponse.of(following);
+    });
+  }
+
+  public async getMemberOne(memberId: number) {
+    const fullMemberWithoutPassword = await this.memberRepository.findOne({
+      relations: ['posts', 'followings', 'followers'],
+      where: { id: memberId },
+    });
+    return FullMemberWithoutPassword.of(fullMemberWithoutPassword);
   }
 }
